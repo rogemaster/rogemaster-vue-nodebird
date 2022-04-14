@@ -5,17 +5,7 @@
 </template>
 
 <script>
-export default {
-    layout: 'admin',
-    data() {
-        return {
-        }
-    },
-    head() {
-        return {
-            title: '프로필'
-        }
-    }    
+export default {   
 }
 </script>
 

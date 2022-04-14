@@ -8,7 +8,5 @@ module.export = {
     buildModules: [
         '@nuxtjs/vuetify',
     ],
-    vuetify: {
-
-    }
+    vuetify: {}
 }
