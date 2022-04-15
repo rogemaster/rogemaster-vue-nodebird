@@ -6,7 +6,7 @@
             <nuxt-link to="/signup">Signup</nuxt-link>
             <nuxt-link to="/admin">admin</nuxt-link>
         </nav>
-        <nuxt/>
+        <nuxt />
     </div>
 </template>
 
