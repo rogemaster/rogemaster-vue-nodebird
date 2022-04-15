@@ -76,7 +76,20 @@ export default {
 
     methods: {
         onSubmitForm() {
-            this.$refs.form.validate();
+            if (this.$refs.form.validate()) {
+                const signUpInfo = {
+                    email: this.email,
+                    password: this.password,
+                    nickname: this.nickname
+                }
+                this.$store.dispatch('users/signUp', signUpInfo)
+                .then(() => {
+                    this.$router.push({ path: '/' });
+                })
+                .catch(() => {
+                    alert('회원가입 실패');
+                })
+            }
         }
     },
 }
