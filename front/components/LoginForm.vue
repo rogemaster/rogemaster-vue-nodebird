@@ -59,7 +59,8 @@ export default {
             if (this.$refs.form.validate()) {
                 const loginInfo = {
                     email: this.email,
-                    password: this.password
+                    password: this.password,
+                    nickname: 'Developer'
                 }
 
                 try {
