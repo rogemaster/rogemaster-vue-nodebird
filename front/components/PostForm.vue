@@ -40,10 +40,12 @@ export default {
     },
 
     methods: {
-        onChangeTextarea() {
-            this.hideDetails = true;
-            this.success = false;
-            this.successMessages = '';
+        onChangeTextarea(value) {
+            if(value.length) {
+                this.hideDetails = true;
+                this.success = false;
+                this.successMessages = '';
+            }
         },
 
         onSubmitForm() {
@@ -53,7 +55,7 @@ export default {
                     user: {
                         nickname: this.me.nickname
                     },
-                    comment: [],
+                    comments: [],
                     image: [],
                     id: Date.now(),
                     createdAt: Date.now()
