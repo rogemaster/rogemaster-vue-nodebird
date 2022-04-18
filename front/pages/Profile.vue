@@ -13,13 +13,15 @@
             <v-card style="margin-bottom: 20px;">
                 <v-container>
                     <v-subheader>팔로잉</v-subheader>
-                    <FollowList />
+                    <!-- <FollowingList /> -->
+                    <FollowList :users="followingList" :remove="removeFollowing" />
                 </v-container>
             </v-card>
             <v-card style="margin-bottom: 20px;">
                 <v-container>
                     <v-subheader>팔로워</v-subheader>
-                    <FollowList />
+                    <!-- <FollowerList /> -->
+                    <FollowList :users="followerList" :remove="removeFollower" />
                 </v-container>
             </v-card>
         </v-container>
@@ -27,10 +29,14 @@
 </template>
 
 <script>
+// import FollowingList from '@/components/FollowingList.vue';
+// import FollowerList from '@/components/FollowerList.vue';
 import FollowList from '@/components/FollowList.vue';
 
 export default {
     components: {
+        // FollowingList,
+        // FollowerList,
         FollowList
     },
 
@@ -44,6 +50,16 @@ export default {
         }
     },
 
+    computed: {
+        followingList() {
+            return this.$store.state.users.followingList;
+        },
+
+        followerList() {
+            return this.$store.state.users.followerList;
+        }
+    },
+
     methods: {
         onChangeNickname() {
             this.$store.dispatch('users/changeNickname', {
@@ -52,6 +68,14 @@ export default {
             .then(() => {
                 this.nickname = '';
             })
+        },
+
+        removeFollowing(id) {
+            this.$store.dispatch('users/removeFollowing', { id });
+        },
+
+        removeFollower(id) {
+            this.$store.dispatch('users/removeFollower', { id });
         }
     },
 }
