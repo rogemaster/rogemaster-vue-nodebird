@@ -40,6 +40,8 @@ export default {
         FollowList
     },
 
+    middleware: 'authenticated',
+
     data() {
         return {
             valid: false,

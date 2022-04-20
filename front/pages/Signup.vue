@@ -49,6 +49,8 @@
 
 <script>
 export default {
+    middleware: 'anonymous',
+
     data() {
         return {
             valid: false,
@@ -74,6 +76,20 @@ export default {
         }
     },
 
+    computed: {
+        me() {
+            return this.$store.state.users.me;
+        }
+    },
+
+    watch: {
+        me(value, oldValue) {
+            if(value) {
+                this.$router.push({path: '/'});
+            }
+        }
+    },
+
     methods: {
         onSubmitForm() {
             if (this.$refs.form.validate()) {
@@ -90,7 +106,7 @@ export default {
                     alert('회원가입 실패');
                 })
             }
-        }
+        },
     },
 }
 </script>
