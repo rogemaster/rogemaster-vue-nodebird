@@ -50,7 +50,7 @@ export default {
 
     methods: {
         onScroll() {
-            if(window.scrollY + document.documentElement.clientHeight === document.documentElement.scrollHeight - 300) {
+            if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
                 if(this.hasMorePost) {
                     this.$store.dispatch('posts/loaadPosts');
                 }

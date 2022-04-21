@@ -4,6 +4,8 @@ export const state = () => ({
     hasMorePost: true,
 });
 
+// 테스트용 서버 없을 경우 이용
+const totalPosts = 51;
 const limit = 10;
 
 export const mutations = {
@@ -23,7 +25,8 @@ export const mutations = {
 
     loadPost(state, payload) {
         // Array(limit).fill() > 빈배열을 만드는 방법
-        const fakerPost = Array(limit).fill().map(v => ({
+        const diff = totalPosts - state.mainPosts.length; // 아직 불러오지 않은 게시글 수
+        const fakerPost = Array(diff > limit ? limit : diff).fill().map(v => ({
             id: Math.random().toString(),
             user: {
                 id: 1,
