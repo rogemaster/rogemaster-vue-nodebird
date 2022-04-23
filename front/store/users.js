@@ -1,41 +1,16 @@
 // 유저정보
 export const state = () => ({
     me: null,
-    followerList: [
-        {
-            id: 1,
-            nickname: 'Masqurade',
-            email: '11@11'
-        },
-        {
-            id: 2,
-            nickname: 'rogemaster',
-            email: '22@22'
-        },
-        {
-            id: 3,
-            nickname: 'rlaaudwn000',
-            email: '33@33'
-        }
-    ],
-    followingList: [
-        {
-            id: 1,
-            nickname: 'Masqurade',
-            email: '11@11'
-        },
-        {
-            id: 2,
-            nickname: 'rogemaster',
-            email: '22@22'
-        },
-        {
-            id: 3,
-            nickname: 'rlaaudwn000',
-            email: '33@33'
-        }
-    ]
+    followerList: [],
+    followingList: [],
+
+    hasMoreFollowing: true,
+    hasMoreFollower: true,
 });
+
+const totalFollower = 8;
+const totalFollowing = 6;
+const limit = 3;
 
 export const mutations = {
     setMe(state, payload) {
@@ -63,7 +38,30 @@ export const mutations = {
         const index = state.followerList.findIndex(v => v.id === payload.id);
         console.log(index);
         state.followerList.splice(index, 1);
-    }
+    },
+
+    loadFollowings(state) {
+        const diff = totalFollowing - state.followingList.length;
+        const fakUsers = Array(diff > limit ? limit : diff).fill().map(v => ({
+            id: Math.random().toString(),
+            nickname: Math.floor(Math.random() * 1000),
+        }));
+
+        state.followingList = state.followingList.concat(fakUsers);
+        state.hasMoreFollowing = fakUsers.length === limit;
+    },
+
+    loadFollowers(state) {
+        const diff = totalFollower - state.followerList.length;
+        const fakUsers = Array(diff > limit ? limit : diff).fill().map(v => ({
+            id: Math.random().toString(),
+            nickname: Math.floor(Math.random() * 1000),
+        }));
+
+        state.followerList = state.followerList.concat(fakUsers);
+        state.hasMoreFollowing = fakUsers.length === limit;
+    },
+
 };
 
 export const actions = {
@@ -99,5 +97,18 @@ export const actions = {
 
     removeFollower({ commit }, payload) {
         commit('removeFollower', payload);
-    }
+    },
+
+    loadFollowers({ commit, state }, payload) {
+        if(state.hasMoreFollower) {
+            commit('loadFollowers')
+        }
+    },
+
+    loadFollowings({ commit, state }, payload) {
+        if(state.hasMoreFollower) {
+            commit('loadFollowings')
+        }
+    },
+
 };

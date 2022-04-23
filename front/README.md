@@ -25,6 +25,16 @@
  * 문제 : 전체 게시물의 수를 모른다.
  * 스크롤을 끝까지 내리기 전에 리스트를 추가로 불러와야 함
  * 실무에서는 쓰로툴링 적용, limit 방식으로 하지 않음
+ * window.scrollY + document.documentElement.clientHeight === document.documentElement.scrollHeight 를 이용하여 추가 리스트 호출
+
+ - virtualized
+ * 라이브러리: vue-virtual-scroll-list
+ * 화면에 보이지 않는 데이터를 없애 버리고 id 정도만 기록해 놓고 스크롤 이동시 보여줌.
+ * 직접 구현이 어려우니 라이브러리 사용을 추천
+ * 벤치 데이터도 있어야 함.
+ * 단점: 화면의 높이를 알아야 함.(브라우저 높이, 컨텐츠 높이 등등)
+
+ - page nation
 
 ## 프론트앤드 개발자의 마인드
  - 프론트 개발자의 업무 : 쓸데 없는 서버 호출은 없어야 한다
