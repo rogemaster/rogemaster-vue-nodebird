@@ -7,7 +7,16 @@
                 </v-toolbar-title>
                 <v-spacer />
                 <v-toolbar-items>
-                    <v-text-field label="검색" hide-details prepend-icon="mdi-magnify" :style="{ display: 'flex', alignItems: 'center' }" />
+                    <v-form @submit.prevent="onSearchHashTag">
+                        <div :style="{ display: 'flex', height: '100%', alignItems: 'center' }">
+                            <v-text-field 
+                                v-model="hashTag"
+                                label="검색" 
+                                hide-details 
+                                prepend-icon="mdi-magnify"
+                            />
+                        </div>
+                    </v-form>
                     <v-btn text nuxt to="/profile" :style="{ display: 'flex', alignItems: 'center' }">
                         <div>프로필</div>
                     </v-btn>
@@ -34,7 +43,22 @@ import LoginForm from '@/components/LoginForm.vue';
 export default {
     components: {
         LoginForm
-    }
+    },
+
+    data() {
+        return {
+            hashTag: '',
+        }
+    },
+
+    methods: {
+        onSearchHashTag() {
+            this.$router.push({
+                path: `/hashtag/${this.hashTag}`
+            });
+            this.hashTag = '';
+        }
+    },
 }
 </script>
 

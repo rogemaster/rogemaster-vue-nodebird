@@ -78,7 +78,15 @@ export default {
         },
 
         onLogOut() {
-            this.$store.dispatch('users/logOut');
+            this.$store.dispatch('users/logOut')
+            .then(() => {
+                this.$router.push({path: '/'});
+                this.email = '';
+                this.password = '';
+            })
+            .catch(() => {
+                alert('로그아웃 실패');
+            })
         }
     },
 }
