@@ -4,12 +4,17 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node app.js"
+    "dev": "nodemon app.js"
   },
   "author": "rogemaster",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "sequelize-cli": "^6.4.1"
   }
 }
