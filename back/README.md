@@ -23,3 +23,13 @@
 
 * sequelize를 글로벌로 설치할 경우 package에 기록이 남지 않아 다른 사람이 프로젝트를
   받았을 경우 전혀 알수 없음.
+
+## Access-Control-Allow-Origin 에러
+ - 해결방법 : 서버에서 프론트 주소를 허용해 줘야함.
+ - Access-Control-Allow-Origin 을 heder에 심어줘야 함.
+ * 이 프로젝트에서는 미들웨어를 사용. npm i cors 사용
+
+## 암호화 방법
+ - bcrypt
+ - scrypt
+ - pbkdf2

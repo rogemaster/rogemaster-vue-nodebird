@@ -67,12 +67,17 @@ export const mutations = {
 export const actions = {
     signUp({ commit }, signUpInfo) {
         // 서버에 회원가입 요청을 보내는 부분
-        this.$axios.post('/user', {
+        this.$axios.post('http://localhost:3085/user', {
             email: signUpInfo.email,
             password: signUpInfo.password,
             nickname: signUpInfo.nickname
-        });
-        commit('setMe', signUpInfo);
+        })
+        .then(() => {
+            commit('setMe', signUpInfo);
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     },
 
     logIn({ commit }, loginInfo) {
