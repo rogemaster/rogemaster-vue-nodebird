@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
         email: {
             type: DataTypes.STRING(40),
             allowNull: false,   // 필수 not Null
+            unique: true,   // 중복 금지
         },
         nickname: {
             type: DataTypes.STRING(20),

@@ -20,6 +20,7 @@
 - 시퀄라이저(sequelize): Javascript로 sql을 표현
 - mysql2: node와 mysql을 연결 하기 위한 라이브러리
 - sequelize-cli: 개발 모드에서 이용하길 위해 설치
+- passport passport-local 로그인 관련 라이브러리
 
 * sequelize를 글로벌로 설치할 경우 package에 기록이 남지 않아 다른 사람이 프로젝트를
   받았을 경우 전혀 알수 없음.
@@ -33,3 +34,4 @@
  - bcrypt
  - scrypt
  - pbkdf2
+
