@@ -62,7 +62,6 @@ export default {
                 const loginInfo = {
                     email: this.email,
                     password: this.password,
-                    nickname: 'Developer'
                 }
 
                 try {
