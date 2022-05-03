@@ -73,8 +73,7 @@ export const actions = {
             nickname: signUpInfo.nickname
         }, { withCredentials: true })
         .then(({ data }) => {
-            console.log('회원가입::', data);
-            commit('setMe', signUpInfo);
+            commit('setMe', data);
         })
         .catch((error) => {
             console.log(error)
@@ -84,23 +83,28 @@ export const actions = {
     async logIn({ commit }, loginInfo) {
         console.log(loginInfo);
         try {
-            const result = await this.$axios.post(
-                'http://localhost:3085/user/login', 
-                loginInfo, 
+            const { data } = await this.$axios.post(
+                'http://localhost:3085/user/login', {
+                    email: loginInfo.email,
+                    password: loginInfo.password,
+                },
                 { withCredentials: true }   // 쿠키를 심어 주기 위해 사용함.
             );                              // 이후 CORS 에러가 발생
-            console.log(result);
-
-            commit('setMe', loginInfo);
-
-            return result;
+            commit('setMe', data);
+            return true;
         }catch(error) {
-            alert('로그인 통신 에러::', error);
+            return false;
         }
     },
 
-    logOut({ commit }, payload) {
-        commit('setMe', null);
+    logOut({ commit }) {
+        this.$axios.post('http://localhost:3085/user/logout', {}, { withCredentials: true })
+        .then(() => {
+            commit('setMe', null);
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     },
 
     changeNickname({ commit }, payload) {

@@ -14,7 +14,7 @@ module.exports = () => {
                     //의미: 에러    성공    실패
                 return done(null, false, { reason: '존재하지 않는 사용자 입니다.'});  // done: callback 함수
             }
-            const result = await bcrypt.compare(passport, exUser.passport);
+            const result = await bcrypt.compare(password, exUser.password);
             if(result) {
                 return done(null, exUser);
             }else {

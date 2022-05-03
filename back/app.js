@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
 const passport = require('passport');
 const session = require('express-session');
 const cookie = require('cookie-parser');
@@ -8,6 +7,7 @@ const morgan = require('morgan');
 
 const db = require('./models');
 const passportConfig = require('./passport');
+const usersRouter = require('./routes/user');
 
 const app = express();
 
@@ -36,74 +36,11 @@ app.use(cors({
 app.use(passport.initialize());
 app.use(passport.session());    // 기록(로그인 정보 등)
 
+app.use('/user', usersRouter);
+
 app.get('/', (req, res) => {
     res.send('안녕. 백엔드');
 })
-
-app.post('/user', async (req, res, next) => {
-    console.log(req.body);
-    try {
-        const hash = await bcrypt.hash(req.body.password, 12);
-        const exUser = await db.User.findOne({
-            where: {
-                email: req.body.email,
-            }
-        });
-        if(exUser) {    // 이미 회원가입 되어 있을 경우
-            return res.status(403).json({
-                errorCode: 1,
-                message: '이미 회원가입 되어있습니다.',
-            });
-        }
-        await db.User.create({
-            email: req.body.email,
-            password: hash,
-            nickname: req.body.nickname,
-        });
-        // http status code 검색
-        // 200: 성공 | 201: 성공적으로 생성했다. 살짝 의미의 한끗차이
-        // return res.status(201).json(newUser);
-        passport.authenticate('local', (error, user, info) => {
-            if(error) {
-                console.log(error);
-                return next(error);
-            }
-            if(info) {
-                return res.status(401).send(info.reason);
-            }
-            return req.login(user, (error) => {  // 세션에 사용자 정보 저장(어떻게 저장?? => serializeUser)
-                if(error) {
-                    console.log(error);
-                    return next(error);
-                }
-                return res.json(user);
-            });
-        })(req, res, next);
-
-    } catch(error) {
-        console.log(error);
-        next(error);
-    }
-});
-
-app.post('/user/login', async (req, res) => {
-    passport.authenticate('local', (error, user, info) => {
-        if(error) {
-            console.log(error);
-            return next(error);
-        }
-        if(info) {
-            return res.status(401).send(info.reason);
-        }
-        return req.login(user, (error) => {  // 세션에 사용자 정보 저장(어떻게 저장?? => serializeUser)
-            if(error) {
-                console.log(error);
-                return next(error);
-            }
-            return res.json(user);
-        });
-    })(req, res, next);
-});
 
 app.post('/post', (req, res) => {
     if(req.isAuthenticated()) {  // 로그인 유무 판단

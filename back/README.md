@@ -35,3 +35,16 @@
  - scrypt
  - pbkdf2
 
+## models
+ # associate
+  - db 테이블들 간의 관계를 나타냄
+  - 관계의 종류
+   * 1:1 (hasOne, belongsTo)
+   * 1:다 (hasMany, belongsTo)
+   * 다:다 (belongsToMany)
+   * belongsTo: 사용자 id 를 자동생성 해줌
+   * hasMany: 자동생성 되는 항목은 없으나 양방향으로 데이터를 불러 올수 있음
+ 
+ # sequelize.define
+  - 생성 테이블 이름 앞글자 대문자로 작성: ex) Post / User
+  - 테이블 생성시 소문자로 생성됨: ex) posts / users

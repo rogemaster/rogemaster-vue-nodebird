@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('user', {
+    const User = sequelize.define('User', { // 대문자로 써야 함. User -> 테이블에는 users로 등록됨
         email: {
             type: DataTypes.STRING(40),
             allowNull: false,   // 필수 not Null
@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     });
     
     User.associate = (db) => {
-
+        db.User.hasMany(db.Post);
+        db.User.hasMany(db.Comment);
     };
     return User;
 }
