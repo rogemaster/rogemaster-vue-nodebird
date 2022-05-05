@@ -48,3 +48,22 @@
  # sequelize.define
   - 생성 테이블 이름 앞글자 대문자로 작성: ex) Post / User
   - 테이블 생성시 소문자로 생성됨: ex) posts / users
+
+ # next
+  - 인수가 없을 경우 다음 미들웨어로 넘어가라는 의미
+  - 인수가 있을 경우 에러 처리로 넘어가라는 의미
+
+ # exports
+  - 객체 형태
+  - exports === {};
+  - module.exports가 exports 보다 우선권이 있어서 같이 쓰는 순간 module.exports가 덮어 씌워 버린다.
+  - module.exports, exports 쓰는 방법이 다름
+
+ # Image
+  - 이미지는 json 형식이 아니므로 form 데이터로 보냄
+  - single: 파일 하나
+  - array: 같은 키로 여러 개
+  - fields: 다른 키로 여러 개
+  - none: 파일 업로드 x
+
+ # multer

@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const db = require('./models');
 const passportConfig = require('./passport');
 const usersRouter = require('./routes/user');
+const postRouter = require('./routes/post');
 
 const app = express();
 
@@ -19,6 +20,7 @@ passportConfig();
 app.use(morgan('dev')); // 요청이 왔을때 콘솔에 요청 온것을 보여주는 미들웨어
 app.use(express.json()); //json 데이터 헤삭
 app.use(express.urlencoded({ extended: false })); // form을 통한 데이터 해석
+app.use('/', express.static('uploads'));
 app.use(cookie('cookiesecret'));
 app.use(session({
     resave: false,
@@ -37,6 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());    // 기록(로그인 정보 등)
 
 app.use('/user', usersRouter);
+app.use('/post', postRouter);
 
 app.get('/', (req, res) => {
     res.send('안녕. 백엔드');

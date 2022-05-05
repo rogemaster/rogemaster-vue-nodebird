@@ -15,7 +15,16 @@
                     @input="onChangeTextarea"
                 />
                 <v-btn type="submit" color="green" absolute right>등록</v-btn>
-                <v-btn>이미지 업로드</v-btn>
+                <input ref="imageInput" type="file" multiple hidden @change="onChangeImages">
+                <v-btn type="button" @click="onClickImageUpload">이미지 업로드</v-btn>
+                <div>
+                    <div v-for="(p, i) in imagePaths" :key="p" style="display: inline-block">
+                        <img :src="`http://localhost:3080/${p}`" :alt="p" style="width: 200px">
+                        <div>
+                            <button type="button" @click="onRemoveImage(i)">제거</button>
+                        </div>
+                    </div>
+                </div>
             </v-form>
         </v-container>
     </v-card>
@@ -36,7 +45,8 @@ export default {
     },
 
     computed: {
-        ...mapState('users', ['me'])
+        ...mapState('users', ['me']),
+        ...mapState('posts', ['imagePaths']),
     },
 
     methods: {
@@ -70,6 +80,27 @@ export default {
 
                 })
             }
+        },
+
+        onClickImageUpload() {
+            this.$refs.imageInput.click();
+        },
+
+        onChangeImages(e) {
+            console.log(e.target.files);
+            const imageFormData = new FormData();
+            // e.target.files --> 배열이 아닌 객채형식인 유사 배열
+            // 그러므로 forEach를 강제로 적용하기위해서 아래 방식으로 사용함.
+            // 결과 = { image: [file1, file2] }
+            [].forEach.call(e.target.files, (f) => {
+                imageFormData.append('image', f);
+            });
+
+            this.$store.dispatch('posts/uploadImages', imageFormData);
+        },
+
+        onRemoveImage(index) {
+            this.$store.commit('removeImagePath', index);
         }
     },
 }

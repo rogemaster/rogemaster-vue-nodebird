@@ -2,6 +2,7 @@
 export const state = () => ({
     mainPosts: [],
     hasMorePost: true,
+    imagePaths: [],
 });
 
 // 테스트용 서버 없을 경우 이용
@@ -38,6 +39,14 @@ export const mutations = {
         }));
         state.mainPosts = state.mainPosts.concat(fakerPost);
         state.hasMorePost = fakerPost.length === limit;
+    },
+
+    concatImagePaths(state, payload) {
+        state.imagePaths = state.imagePaths.concat(payload); // 이미지 합치기
+    },
+
+    removeImagePath(state, payload) {
+        state.imagePaths.splice(payload, 1);
     }
 };
 
@@ -59,5 +68,15 @@ export const actions = {
         if(state.hasMorePost) {
             commit('loadPost', payload);
         }
+    },
+
+    uploadImages({ commit }, payload) {
+        this.$axios.post('http://localhost:3085/post/images', payload, { withCredentials: true })
+        .then((res) => {
+            commit('concatImagePaths', res.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 }

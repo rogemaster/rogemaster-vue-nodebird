@@ -3,8 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const db = require('../models');
+const { isNotLoggedIn, isLoggedIn } = require('./middleware');
 
-router.post('/', async (req, res, next) => {
+// 회원가입
+router.post('/', isNotLoggedIn, async (req, res, next) => {
     console.log(req.body);
     try {
         const hash = await bcrypt.hash(req.body.password, 12);
@@ -50,7 +52,8 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-router.post('/login', async (req, res, next) => {
+// 로그인
+router.post('/login', isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (error, user, info) => {
         if(error) {
             console.log(error);
@@ -69,7 +72,8 @@ router.post('/login', async (req, res, next) => {
     })(req, res, next);
 });
 
-router.post('/logout', (req, res) => {
+// 로그아웃
+router.post('/logout', isLoggedIn, (req, res) => {
     if(req.isAuthenticated()) {
         req.logout();
         req.session.destroy();  // 이 부분선택 세션삭제
