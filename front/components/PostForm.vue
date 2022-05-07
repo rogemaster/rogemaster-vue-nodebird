@@ -19,7 +19,7 @@
                 <v-btn type="button" @click="onClickImageUpload">이미지 업로드</v-btn>
                 <div>
                     <div v-for="(p, i) in imagePaths" :key="p" style="display: inline-block">
-                        <img :src="`http://localhost:3080/${p}`" :alt="p" style="width: 200px">
+                        <img :src="`http://localhost:3085/${p}`" :alt="p" style="width: 200px">
                         <div>
                             <button type="button" @click="onRemoveImage(i)">제거</button>
                         </div>
@@ -62,13 +62,6 @@ export default {
             if(this.$refs.form.validate()) {
                 this.$store.dispatch('posts/add', {
                     content: this.content,
-                    user: {
-                        nickname: this.me.nickname
-                    },
-                    comments: [],
-                    image: [],
-                    id: Date.now(),
-                    createdAt: Date.now()
                 })
                 .then(() => {
                     this.content = '';
@@ -76,8 +69,8 @@ export default {
                     this.success = true;
                     this.successMessages = '게시글 등록 성공!';
                 })
-                .catch(() => {
-
+                .catch((error) => {
+                    console.log(error);
                 })
             }
         },
@@ -100,7 +93,7 @@ export default {
         },
 
         onRemoveImage(index) {
-            this.$store.commit('removeImagePath', index);
+            this.$store.commit('posts/removeImagePath', index);
         }
     },
 }

@@ -12,6 +12,7 @@ const limit = 10;
 export const mutations = {
     addMainPost(state, payload) {
         state.mainPosts.unshift(payload);
+        state.imagePaths = [];
     },
 
     removeMainPost(state, payload) {
@@ -29,7 +30,7 @@ export const mutations = {
         const diff = totalPosts - state.mainPosts.length; // 아직 불러오지 않은 게시글 수
         const fakerPost = Array(diff > limit ? limit : diff).fill().map(v => ({
             id: Math.random().toString(),
-            user: {
+            User: {
                 id: 1,
                 nickname: 'rogemaster'
             },
@@ -53,7 +54,16 @@ export const mutations = {
 export const actions = {
     add({ commit }, payload) {
         // 서버에 게시글 등록요청
-        commit('addMainPost', payload);
+        this.$axios.post('http://localhost:3085/post', {
+            content: payload.content,
+            imagePaths: state.imagePaths,
+        }, { withCredentials: true })
+        .then(({ data }) => {
+            commit('addMainPost', data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     },
 
     remove({ commit }, payload) {

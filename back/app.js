@@ -45,12 +45,6 @@ app.get('/', (req, res) => {
     res.send('안녕. 백엔드');
 })
 
-app.post('/post', (req, res) => {
-    if(req.isAuthenticated()) {  // 로그인 유무 판단
-
-    }
-})
-
 app.listen(3085, () => {
     console.log(`백엔드 서버 ${3085} 번 포트 작동`);
 });
