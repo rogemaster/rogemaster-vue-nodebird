@@ -5,6 +5,11 @@ const passport = require('passport');
 const db = require('../models');
 const { isNotLoggedIn, isLoggedIn } = require('./middleware');
 
+router.get('/', async (req, res, next) => {
+    const user = req.user;
+    res.json(user);
+});
+
 // 회원가입
 router.post('/', isNotLoggedIn, async (req, res, next) => {
     console.log(req.body);

@@ -9,6 +9,7 @@ const db = require('./models');
 const passportConfig = require('./passport');
 const usersRouter = require('./routes/user');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use(passport.session());    // 기록(로그인 정보 등)
 
 app.use('/user', usersRouter);
 app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 
 app.get('/', (req, res) => {
     res.send('안녕. 백엔드');

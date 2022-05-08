@@ -1,7 +1,7 @@
 <template>
     <div style="margin-bottom: 20px;">
         <v-card>
-            <v-img />
+            <PostImages :images="post.Images || []" />
             <v-card-title>
                 <h3><nuxt-link :to="`/user/${post.id}`">{{ post.User.nickname }}</nuxt-link></h3>
             </v-card-title>
@@ -52,10 +52,12 @@
 
 <script>
 import CommentForm from '@/components/CommentForm.vue';
+import PostImages from '@/components/PostImages.vue';
 
 export default {
     components: {
-        CommentForm
+        CommentForm,
+        PostImages
     },
 
     props: {
@@ -74,15 +76,23 @@ export default {
     methods: {
         onRemovePost() {
             this.$store.dispatch('posts/remove', {
-                id: this.post.id
+                postId: this.post.id
             });
         },
 
         onEditPost() {
-
+            this.$store.dispatch('posts/edit', {
+                postId: this.post.id,
+                content: this.post.content
+            });
         },
 
         onToggleComment() {
+            if(!this.commentOpened) {
+                this.$store.dispatch('loadComments', {
+                    postId: this.postId,
+                });
+            }
             this.commentOpened = !this.commentOpened;
         }
     },

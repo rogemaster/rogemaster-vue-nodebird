@@ -45,6 +45,10 @@ export default {
         LoginForm
     },
 
+    asyncData({ store }) {
+        store.dispatch('users/loadUser');
+    },
+
     data() {
         return {
             hashTag: '',

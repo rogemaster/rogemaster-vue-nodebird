@@ -16,7 +16,7 @@ export const mutations = {
     },
 
     removeMainPost(state, payload) {
-        const index = state.mainPosts.findIndex(v => v.id === payload.id);
+        const index = state.mainPosts.findIndex(v => v.id === payload.postId);
         state.mainPosts.splice(index, 1);
     },
 
@@ -25,21 +25,29 @@ export const mutations = {
         state.mainPosts[index].comments.unshift(payload);
     },
 
+    loadComments(state, payload) {
+        const index = state.mainPosts.findIndex(v => v.id === payload.postId);
+        state.mainPosts[index].comments = payload;
+    },
+
     loadPost(state, payload) {
+        // mock data 처리
         // Array(limit).fill() > 빈배열을 만드는 방법
-        const diff = totalPosts - state.mainPosts.length; // 아직 불러오지 않은 게시글 수
-        const fakerPost = Array(diff > limit ? limit : diff).fill().map(v => ({
-            id: Math.random().toString(),
-            User: {
-                id: 1,
-                nickname: 'rogemaster'
-            },
-            content: `Hello Infinite scrolling~ ${Math.random()}`,
-            comments: [],
-            image: [],
-        }));
-        state.mainPosts = state.mainPosts.concat(fakerPost);
-        state.hasMorePost = fakerPost.length === limit;
+        // const diff = totalPosts - state.mainPosts.length; // 아직 불러오지 않은 게시글 수
+        // const fakerPost = Array(diff > limit ? limit : diff).fill().map(v => ({
+        //     id: Math.random().toString(),
+        //     User: {
+        //         id: 1,
+        //         nickname: 'rogemaster'
+        //     },
+        //     content: `Hello Infinite scrolling~ ${Math.random()}`,
+        //     comments: [],
+        //     image: [],
+        // }));
+
+        // 실제 데이터 처리
+        state.mainPosts = state.mainPosts.concat(payload);
+        state.hasMorePost = payload.length === limit;
     },
 
     concatImagePaths(state, payload) {
@@ -52,11 +60,11 @@ export const mutations = {
 };
 
 export const actions = {
-    add({ commit }, payload) {
+    add({ commit, state }, payload) {
         // 서버에 게시글 등록요청
         this.$axios.post('http://localhost:3085/post', {
             content: payload.content,
-            imagePaths: state.imagePaths,
+            image: state.imagePaths,
         }, { withCredentials: true })
         .then(({ data }) => {
             commit('addMainPost', data);
@@ -67,16 +75,48 @@ export const actions = {
     },
 
     remove({ commit }, payload) {
-        commit('removeMainPost', payload);
+        this.$axios.delete(`http://localhost:3085/post/${payload.postId}`, { withCredentials: true })
+        .then(() => {
+            commit('removeMainPost', payload);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
     },
 
     addComment({ commit }, payload) {
-        commit('addComment', payload);
+        this.$axios.post(`http://localhost:3085/post/${payload.postId}/comment`, {
+            contnet: payload.content,
+        }, { withCredentials: true })
+        .then(({ data }) => {
+            commit('addComment', data);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
     },
 
-    loaadPosts({ commit, state }, payload) {
+    loadComment({ commit, state }, payload) {
+        this.$axios.get(`http://localhost:3085/post/${payload.postId}/comments`)
+        .then(({ data }) => {
+            commit('loadComments', data);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+    },
+
+    loadPosts({ commit, state }) {
         if(state.hasMorePost) {
-            commit('loadPost', payload);
+            this.$axios.get(
+                `http://localhost:3085/posts?offset=${state.mainPosts.length}&limit=10`
+            )
+            .then(({ data }) => {
+                commit('loadPosts', data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
         }
     },
 
@@ -88,5 +128,7 @@ export const actions = {
         .catch((error) => {
             console.log(error);
         })
-    }
+    },
+
+    
 }

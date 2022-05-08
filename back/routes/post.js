@@ -19,7 +19,7 @@ const upload = multer({
         }
     }), 
     limit: { fileSize: 20 * 2014 * 1024 },  // 20mb로 제한
-})
+});
 
 router.post('/', isLoggedIn,  async (req, res, next) => {
     try{
@@ -38,14 +38,32 @@ router.post('/', isLoggedIn,  async (req, res, next) => {
             })));
             await newPost.addHashtags(result.map(r => r[0]));
         }
+
+        if(req.body.image) {
+            if(Array.isArray(req.body.image)) {
+                await Promise.all(req.body.image.map((image) => {
+                    return db.Image.create({ src: image, PostId: newPost.id });
+                }));
+            }else {
+                await db.Image.create({
+                    src: req.body.image,
+                    PostId: newPost.id
+                });
+            }
+        }
         // include: 관계들을 자동으로 포함해 주는 기능
         // attributes 속성으로 원하는 데이터만 가져올수 있음
         const fullPost = await db.Post.findOne({
             where: { id: newPost.id },
-            include: [{
-                model: db.User,
-                attributes: ['id', 'nickname'],
-            }],
+            include: [
+                {
+                    model: db.User,
+                    attributes: ['id', 'nickname'],
+                },
+                {
+                    model: db.Image,
+                }
+            ],
         });
 
         return res.json(fullPost);
@@ -67,7 +85,7 @@ router.get('/:id/comments', async (req, res, next) => {
         if(!post) {
             return res.status(404).send('포스트가 존재하지 않습니다.');
         }
-        const comments = await db.findAll({
+        const comments = await db.Comment.findAll({
             where: {
                 PostId: req.params.id,
             },
@@ -111,5 +129,37 @@ router.post('/:id/comment', isLoggedIn, async (req, res, next) => {
         next(error);
     }
 });
+
+router.patch('/:id', async (req, res, next) => {
+    try {
+        await db.Post.patch({
+            where: {
+                id: req.params.id,
+            }
+        });
+
+        return res.send('');
+
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+})
+
+router.delete('/:id', async (req, res, next) => {
+    try {
+        await db.Post.destroy({
+            where: {
+                id: req.params.id,
+            }
+        });
+
+        return res.send('삭제하였습니다.');
+
+    }catch(error) {
+        console.error(error);
+        next(error);
+    }
+})
 
 module.exports = router;
