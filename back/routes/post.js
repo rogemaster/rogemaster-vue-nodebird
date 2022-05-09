@@ -89,10 +89,15 @@ router.get('/:id/comments', async (req, res, next) => {
             where: {
                 PostId: req.params.id,
             },
-            include: [{
-                model: db.User,
-                attributes: ['id', 'nickname'],
-            }],
+            include: [
+                {
+                    model: db.User,
+                    attributes: ['id', 'nickname'],
+                },
+                {
+                    model: db.Image,
+                }
+            ],
             order: [['createdAt', 'ASE']],
         });
 

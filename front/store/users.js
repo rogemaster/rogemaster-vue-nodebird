@@ -66,19 +66,18 @@ export const mutations = {
 
 export const actions = {
     // 유저정보 가져오기
-    loadUser({ commit }) {
-        this.$axios.get('http://localhost:3085/user', { withCredentials: true })
-        .then(({ data }) => {
-            commit('setMe', data)
-        })
-        .catch((error) => {
+    async loadUser({ commit }) {
+        try {
+            const { data } = await this.$axios.get('/user', { withCredentials: true });
+            commit('setMe', data);
+        } catch (error) {
             console.error(error);
-        })
+        }
     },
 
     signUp({ commit }, signUpInfo) {
         // 서버에 회원가입 요청을 보내는 부분
-        this.$axios.post('http://localhost:3085/user', {
+        this.$axios.post('/user', {
             email: signUpInfo.email,
             password: signUpInfo.password,
             nickname: signUpInfo.nickname
@@ -95,7 +94,7 @@ export const actions = {
         console.log(loginInfo);
         try {
             const { data } = await this.$axios.post(
-                'http://localhost:3085/user/login', {
+                '/user/login', {
                     email: loginInfo.email,
                     password: loginInfo.password,
                 },
@@ -109,7 +108,7 @@ export const actions = {
     },
 
     logOut({ commit }) {
-        this.$axios.post('http://localhost:3085/user/logout', {}, { withCredentials: true })
+        this.$axios.post('/user/logout', {}, { withCredentials: true })
         .then(() => {
             commit('setMe', null);
         })

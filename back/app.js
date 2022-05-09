@@ -33,7 +33,7 @@ app.use(session({
     },
 }))
 app.use(cors({
-    origin: 'http://localhost:3000',   // 프론트 서버 주소 허용
+    origin: 'http://localhost:3080',   // 프론트 서버 주소 허용
     credentials: true,
 })); 
 app.use(passport.initialize());

@@ -34,6 +34,14 @@
  * 벤치 데이터도 있어야 함.
  * 단점: 화면의 높이를 알아야 함.(브라우저 높이, 컨텐츠 높이 등등)
 
+ # nuxtServerInit(공통) / fetch(개별)
+  - 모든 페이지가 화면 그려지기 전에 실행 되는 nuxt 함수
+  - 필수적으로 return 해 줘서 Promise가 종료된다는걸 알려줘야 한다.
+  - vue store의 data를 채워 넣을때 사용
+
+ # asyncData
+  - vue component의 data함수의 값을 채워 넣을때 사용 
+
 ## Q&A
  - () => 와 () => ({}) 의 차이
  * () => 는 아래와 같은 return 문이다.

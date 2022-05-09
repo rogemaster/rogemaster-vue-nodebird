@@ -1,10 +1,21 @@
-export const head = {
-    title: 'NodeBird'
-};
-export const modules = [
-    '@nuxtjs/axios',
-];
-export const buildModules = [
-    '@nuxtjs/vuetify',
-];
-export const vuetify = {};
+module.exports = {
+    head: {
+        title: 'NodeBird'
+    },
+
+    modules: [
+        '@nuxtjs/axios',
+    ],
+
+    buildModules: [
+        '@nuxtjs/vuetify',
+    ],
+
+    vuetify: {},
+
+    axios: {
+        browserBaseURL: 'http://localhost:3085',
+        baseURL: 'http://localhost:3085',
+        https: false,
+    },
+}

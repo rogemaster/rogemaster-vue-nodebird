@@ -20,7 +20,7 @@ export default {
     },
 
     fetch({ store }) {   // component가 마운트 되기 전에 실행
-        store.dispatch('posts/loaadPosts');
+        store.dispatch('posts/loadPosts');
     },
 
     computed: {
@@ -49,7 +49,7 @@ export default {
         onScroll() {
             if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
                 if(this.hasMorePost) {
-                    this.$store.dispatch('posts/loaadPosts');
+                    this.$store.dispatch('posts/loadPosts');
                 }
             }
         }
