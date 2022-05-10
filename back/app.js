@@ -13,7 +13,7 @@ const postsRouter = require('./routes/posts');
 
 const app = express();
 
-db.sequelize.sync();
+db.sequelize.sync(); // force: true -> DB Table 새로고침할때마다 삭제 후 재 생성
 passportConfig();
 
 // app.use -> req, res를 조작
