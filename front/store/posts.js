@@ -56,7 +56,20 @@ export const mutations = {
 
     removeImagePath(state, payload) {
         state.imagePaths.splice(payload, 1);
-    }
+    },
+
+    likePost(state, payload) {
+        const index = state.mainPosts.findIndex(v => v.id === payload.postId);
+        state.mainPosts[index].Likers.push({
+            id: payload.userId,
+        });
+    },
+
+    unlikePost(state, payload) {
+        const index = state.mainPosts.findIndex(v => v.id === payload.postId);
+        const userIndex = state.mainPosts[index].findIndex(v => v.id === payload.userId);
+        state.mainPosts[index].Likers.splice(userIndex, 1);
+    },
 };
 
 export const actions = {
@@ -130,5 +143,39 @@ export const actions = {
         })
     },
 
-    
-}
+    onReteet({ commit }, payload) {
+        this.$axios.post(`post/${payload.postId}/retweet`, {}, { withCredentials: true })
+        .then(({ data }) => {
+            commit('addMainPost', data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    },
+
+    likePost({ commit }, payload) {
+        this.$axios.post(`post/${payload.postId}/like`, {}, { withCredentials: true })
+        .then(({ data }) => {
+            commit('likePost', {
+                userId: data.userId,
+                postId: payload.postId,
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    },
+
+    unlikePost({ commit }, payload) {
+        this.$axios.delete(`post/${payload.postId}/like`, { withCredentials: true })
+        .then(({ data }) => {
+            commit('unlikePost', {
+                userId: data.userId,
+                postId: payload.postId,
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    },
+};

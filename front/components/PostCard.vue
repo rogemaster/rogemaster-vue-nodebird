@@ -14,8 +14,8 @@
                 <v-btn text color="orange">
                     <v-icon>mdi-repeat-variant</v-icon>
                 </v-btn>
-                <v-btn text color="orange">
-                    <v-icon>mdi-heart-outline</v-icon>
+                <v-btn text color="orange" @click="onclickHeart">
+                    <v-icon>{{ heartIcon }}</v-icon>
                 </v-btn>
                 <v-btn text color="orange" @click="onToggleComment">
                     <v-icon>mdi-comment-outline</v-icon>
@@ -73,6 +73,21 @@ export default {
         }
     },
 
+    computed: {
+        me() {
+            return this.$store.state.users.me;
+        },
+
+        liked() {
+            const me = this.$store.state.users.me;
+            return !!(this.post.Likers || []).find(v => v.id === (me && me.id));
+        },
+
+        heartIcon() {
+            return this.liked ? 'mdi-heart' : 'mdi-heart-outline';
+        }
+    },
+
     methods: {
         onRemovePost() {
             this.$store.dispatch('posts/remove', {
@@ -94,6 +109,34 @@ export default {
                 });
             }
             this.commentOpened = !this.commentOpened;
+        },
+
+        onclickHeart() {
+            if(!this.me) {
+                return alert('로그인이 필요합니다.');
+            }
+            
+            if(this.liked) {
+                return this.$store.dispatch('posts/unlikePost', {
+                    postId: this.post.id,
+                });
+            }
+
+            if(this.liked) {
+                return this.$store.dispatch('posts/likePost', {
+                    postId: this.post.id,
+                });
+            }
+        },
+
+        onReteet() {
+            if(!this.me) {
+                return alert('로그인이 필요합니다.');
+            }
+            
+            this.$store.dispatch('posts/retweet', {
+                postId: this.post.id,
+            });
         }
     },
     

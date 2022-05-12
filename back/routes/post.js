@@ -61,6 +61,11 @@ router.post('/', isLoggedIn,  async (req, res, next) => {
                     attributes: ['id', 'nickname'],
                 },
                 {
+                    model: db.User,
+                    as: 'Likers',
+                    attributes: ['id'],
+                },
+                {
                     model: db.Image,
                 }
             ],
@@ -211,6 +216,11 @@ router.post('/:id/retweet', async (req, res, next) => {
                 {
                     model: db.User,
                     attributes: [ 'id', 'nickname' ],
+                },
+                {
+                    model: db.User,
+                    as: 'Likers',
+                    attributes: ['id'],
                 },
                 {
                     model: db.Post,
