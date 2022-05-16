@@ -187,7 +187,7 @@ router.post('/:id/retweet', async (req, res, next) => {
         }
 
         if(req.user.id === post.UserId || (post.Retweet && post.Retweet.UserId === req.user.id)) {
-            return res.status(403), send('자신의 글을 리트윗할 수 없습니다.');
+            return res.status(403).send('자신의 글을 리트윗할 수 없습니다.');
         }
         
         const retweetTargetId = post.RetweetId || post.id;

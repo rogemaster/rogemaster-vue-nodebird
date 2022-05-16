@@ -143,13 +143,14 @@ export const actions = {
         })
     },
 
-    onReteet({ commit }, payload) {
+    retweet({ commit }, payload) {
         this.$axios.post(`post/${payload.postId}/retweet`, {}, { withCredentials: true })
         .then(({ data }) => {
             commit('addMainPost', data);
         })
         .catch((error) => {
-            console.error(error);
+            console.error(error.response.data);
+            alert(error.response.data);
         });
     },
 
