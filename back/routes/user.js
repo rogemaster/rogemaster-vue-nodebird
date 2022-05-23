@@ -151,4 +151,42 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
     }
 });
 
+router.get(':/id/followings', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await db.User.findOne({
+            where: { id: req.user.id },
+        });
+        const followings = await user.getFollowings({
+            attributes: [ 'id', 'nickname' ],
+            limit: parseInt(req.query.limit || 3, 10),
+            offset: parseInt(req.query.offset || 0, 10),
+        });
+
+        return res.json(followings);
+
+    } catch (error) {
+        console.error(error);
+        next();
+    }
+});
+
+router.get(':/id/followers', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await db.User.findOne({
+            where: { id: req.user.id },
+        });
+        const followers = await user.getFollowers({
+            attributes: [ 'id', 'nickname' ],
+            limit: parseInt(req.query.limit || 3, 10),
+            offset: parseInt(req.query.offset || 0, 10),
+        });
+
+        return res.json(followers);
+
+    } catch (error) {
+        console.error(error);
+        next();
+    }
+});
+
 module.exports = router;

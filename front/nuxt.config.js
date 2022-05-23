@@ -18,4 +18,7 @@ module.exports = {
         baseURL: 'http://localhost:3085',
         https: false,
     },
+    server: {
+        port: 3080,
+    }
 }
